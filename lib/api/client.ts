@@ -4,7 +4,7 @@ import axios from "axios";
 // automatically). During SSR there is no origin to resolve a relative URL against, so
 // server-rendered requests must hit the backend directly.
 const baseURL = typeof window === "undefined"
-  ? `${process.env.BACKEND_URL || "http://127.0.0.1:8080"}/api`
+  ? `${process.env.BACKEND_URL || process.env.HOLDCO_BACKEND_ORIGIN || "http://127.0.0.1:8080"}/api`
   : "/api";
 
 const apiClient = axios.create({

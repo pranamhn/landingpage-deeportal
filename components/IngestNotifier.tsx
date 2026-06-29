@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { io, Socket } from "socket.io-client";
 
+import { BACKEND_ORIGIN } from "@/lib/backendOrigin";
+
 interface IngestUpdate {
   events_found: number;
   companies_touched: number;
@@ -20,7 +22,7 @@ export default function IngestNotifier() {
   }, []);
 
   useEffect(() => {
-    const socket = io("http://127.0.0.1:8080", {
+    const socket = io(BACKEND_ORIGIN, {
       transports: ["websocket"],
       reconnectionDelay: 5000,
     });

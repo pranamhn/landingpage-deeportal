@@ -18,10 +18,11 @@ const nextConfig = {
     ];
   },
   async rewrites() {
+    const backendOrigin = process.env.HOLDCO_BACKEND_ORIGIN || process.env.BACKEND_URL || "http://127.0.0.1:8080";
     return [
       {
         source: "/api/:path*",
-        destination: "http://127.0.0.1:8080/api/:path*",
+        destination: `${backendOrigin}/api/:path*`,
       },
     ];
   },

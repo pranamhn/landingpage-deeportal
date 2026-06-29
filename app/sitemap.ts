@@ -12,15 +12,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Dynamic company + investor slugs fetched from backend
   let companySlugs: string[] = [];
   let investorSlugs: string[] = [];
+  const backendUrl = process.env.BACKEND_URL || process.env.HOLDCO_BACKEND_ORIGIN || "http://127.0.0.1:8080";
   try {
-    const resp = await fetch("http://127.0.0.1:8080/api/companies?limit=200");
+    const resp = await fetch(`${backendUrl}/api/companies?limit=200`);
     if (resp.ok) {
       const data = await resp.json();
       companySlugs = (data || []).map((c: any) => c.slug).filter(Boolean);
     }
   } catch {}
   try {
-    const resp = await fetch("http://127.0.0.1:8080/api/investors?limit=50");
+    const resp = await fetch(`${backendUrl}/api/investors?limit=50`);
     if (resp.ok) {
       const data = await resp.json();
       investorSlugs = (data || []).map((i: any) => i.slug || i.id).filter(Boolean);
