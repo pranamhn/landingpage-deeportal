@@ -101,5 +101,18 @@ npm run dev
 ## Catatan
 
 - Kode tidak diubah — hanya dipindahkan (sesuai instruksi)
+- `app/api/admin/*` dihapus dari landingpage (hanya untuk admin dashboard)
 - Kedua repo build bersih (`npx tsc --noEmit` OK)
 - Shared components/lib perlu di-sync manual jika ada perubahan
+
+---
+
+## Adjustments yang Perlu Dicek
+
+| Area | Status | Keterangan |
+|------|--------|------------|
+| **CORS backend** | ✅ OK | `localhost:3000` dan `localhost:3001` sudah di-allow |
+| **API base URL** | ✅ OK | Kedua repo pakai `HOLDCO_BACKEND_ORIGIN` (port 8080) |
+| **Admin API routes** | ✅ Fixed | `/api/admin/*` dipindah ke frontend-deeportal |
+| **Auth session** | ✅ OK | Shared `AuthProvider`, cookie-based |
+| **Navigation links** | ✅ OK | Tidak ada hardcoded link antar repo |
