@@ -1,0 +1,13 @@
+{
+  "name": "Swarm Deeportal",
+  "short_name": "Swarm",
+  "description": "AI-Powered Dual-Mode Prediction Engine — Social Sentiment + Investment Prediction",
+  "start_url": "/swarm",
+  "display": "standalone",
+  "background_color": "#f8f8fc",
+  "theme_color": "#2e38db",
+  "icons": [
+    { "src": "/favicon.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/favicon.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

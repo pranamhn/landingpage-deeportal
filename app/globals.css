@@ -1,0 +1,136 @@
+@import "tailwindcss";
+@config "../tailwind.config.ts";
+
+body {
+  background: linear-gradient(180deg, #faf9fc 0%, #f8f8fc 48%, #f0eff8 100%);
+  color: #18222f;
+  font-family: "Inter", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+
+@keyframes admin-tab-content-in {
+  0% {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-admin-tab-content {
+  animation: admin-tab-content-in 220ms ease-out;
+}
+
+/* rules/plan_dashboard.md §10 Phase 5.4 — page transition */
+@keyframes admin-page-in {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-admin-page-in {
+  animation: admin-page-in 180ms ease-out;
+}
+
+@keyframes toast-in {
+  0% {
+    opacity: 0;
+    transform: translateX(16px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-toast-in {
+  animation: toast-in 200ms ease-out;
+}
+
+/*
+  Radius convention: rounded-lg (controls/buttons/inputs), rounded-2xl (cards),
+  rounded-full (avatars/badges/pills). Don't introduce other radius values.
+  Shadow convention: shadow-sm (card default), shadow-md (hover/sticky emphasis).
+  Spacing convention: Tailwind's default 4px scale already matches space-1..space-16.
+  Page rhythm: mb-8 between a page header and its first content block,
+  mb-10/space-y-10 between major sections within a page, gap-3..gap-6 within a
+  card grid. Don't introduce other ad-hoc section gap values.
+*/
+
+/* Base card */
+.card {
+  @apply bg-white/80 border border-black/10 rounded-2xl shadow-sm p-7;
+}
+
+/* label-ui tier: eyebrow / mini-heading above a title */
+.eyebrow {
+  @apply text-label-ui font-extrabold uppercase tracking-[0.1em] text-brand-600;
+}
+
+/* Ambient decorative glow behind hero copy, kept subtle on purpose */
+.hero-glow {
+  position: absolute;
+  inset: -3rem -4rem auto auto;
+  width: 26rem;
+  height: 26rem;
+  background: radial-gradient(circle at 30% 30%, rgba(77, 85, 236, 0.16), rgba(120, 0, 240, 0.1) 60%, transparent 75%);
+  filter: blur(48px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Live indicator — smooth breathing dot for small status indicators */
+@keyframes live-dot {
+
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.5;
+    transform: scale(0.75);
+  }
+}
+
+.animate-live-dot {
+  animation: live-dot 1.5s ease-in-out infinite;
+}
+
+/* Live indicator — smooth breathing glow ring for larger cards */
+@keyframes live-breathe {
+
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5);
+  }
+
+  50% {
+    box-shadow: 0 0 0 6px rgba(16, 185, 129, 0);
+  }
+}
+
+.animate-live-breathe {
+  animation: live-breathe 2s ease-in-out infinite;
+}
+
+@media (max-width: 639px) {
+  .hero-glow {
+    inset: -2rem -2rem auto auto;
+    width: 20rem;
+    height: 20rem;
+    filter: blur(40px);
+  }
+}

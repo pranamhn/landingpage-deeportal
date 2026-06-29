@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="dGrad" x1="20" y1="20" x2="220" y2="220" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0a1a40"/>
+      <stop offset="1" stop-color="#1d4fd6"/>
+    </linearGradient>
+    <linearGradient id="barGrad" x1="0" y1="216" x2="0" y2="92" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0e8f63"/>
+      <stop offset="1" stop-color="#3be8ac"/>
+    </linearGradient>
+    <clipPath id="bowlClip">
+      <rect x="90" y="0" width="166" height="256"/>
+    </clipPath>
+    <mask id="ringMask">
+      <rect x="0" y="0" width="256" height="256" fill="#fff"/>
+      <circle cx="130" cy="128" r="48" fill="#000"/>
+    </mask>
+  </defs>
+
+  <!-- D spine -->
+  <rect x="40" y="40" width="50" height="176" rx="8" fill="url(#dGrad)"/>
+
+  <!-- D bowl: thick ring (cut out via mask, not painted white) clipped to its right half -->
+  <g clip-path="url(#bowlClip)" mask="url(#ringMask)">
+    <circle cx="130" cy="128" r="88" fill="url(#dGrad)"/>
+  </g>
+
+  <!-- Ascending bar-chart bars, layered over the spine -->
+  <rect x="18" y="152" width="22" height="64" rx="2" fill="url(#barGrad)"/>
+  <rect x="46" y="124" width="22" height="92" rx="2" fill="url(#barGrad)"/>
+  <rect x="74" y="92" width="22" height="124" rx="2" fill="url(#barGrad)"/>
+</svg>
