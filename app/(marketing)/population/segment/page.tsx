@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Card from "@/components/ui/Card";
 import Button from "@/components/ui/Button";
+import SearchableSelect from "@/components/form/SearchableSelect";
 
 const REGIONS = [
   { code: "31", name: "DKI Jakarta" },
@@ -50,9 +51,11 @@ export default function SegmentPage() {
           <div className="space-y-8">
             <div>
               <label className={labelClass}>Region</label>
-              <select value={region} onChange={(e) => setRegion(e.target.value)} className={inputClass}>
-                {REGIONS.map((r) => <option key={r.code} value={r.code}>{r.name}</option>)}
-              </select>
+              <SearchableSelect
+                value={region}
+                options={REGIONS.map((r) => ({ id: r.code, label: r.name }))}
+                onChange={(opt) => setRegion(opt?.id || REGIONS[0].code)}
+              />
             </div>
 
             <div>

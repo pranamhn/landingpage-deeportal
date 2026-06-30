@@ -4,7 +4,7 @@ import { Suspense, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Input from "@/components/ui/Input";
-import Select from "@/components/ui/Select";
+import SearchableSelect from "@/components/form/SearchableSelect";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
 import { createSubmission } from "@/lib/api/submissionsService";
@@ -78,11 +78,11 @@ function SubmitForm() {
 
       <div>
         <p className="eyebrow mb-2">What are you submitting</p>
-        <Select value={kind} onChange={(e) => setKind(e.target.value as SubmissionKind)}>
-          {KIND_OPTIONS.map((opt) => (
-            <option key={opt.value} value={opt.value}>{opt.label}</option>
-          ))}
-        </Select>
+        <SearchableSelect
+          value={kind}
+          options={KIND_OPTIONS.map((o) => ({ id: o.value, label: o.label }))}
+          onChange={(opt) => setKind((opt?.id || "company") as SubmissionKind)}
+        />
       </div>
 
       <div className="border-t border-black/5 pt-5">

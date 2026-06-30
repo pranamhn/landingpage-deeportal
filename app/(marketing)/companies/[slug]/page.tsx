@@ -17,10 +17,12 @@ import Link from "next/link";
 type Props = { params: Promise<{ slug: string }> };
 
 export async function generateStaticParams() {
-  const result = await searchCompanies({ limit: "50" });
+  const result = await searchCompanies({ limit: "500" });
   if (!result.success) return [];
   return result.data.data.map((c) => ({ slug: c.slug }));
 }
+
+export const revalidate = 3600;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;

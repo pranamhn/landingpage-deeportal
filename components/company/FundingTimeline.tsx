@@ -136,8 +136,8 @@ export default function FundingTimeline({ rounds, companySlug }: { rounds: Fundi
           )}
           {r.sources.length > 0 && (
             <div className="mt-1 flex flex-wrap gap-2">
-              {r.sources.map((source) => (
-                <a key={source.url} href={source.url} target="_blank" rel="noopener noreferrer" className="inline-block text-xs text-muted hover:text-brand-600">
+              {r.sources.map((source, i) => (
+                <a key={`${source.url}-${i}`} href={source.url} target="_blank" rel="noopener noreferrer" className="inline-block text-xs text-muted hover:text-brand-600">
                   {source.title || extractDomain(source.url) || "Source"} ↗
                 </a>
               ))}

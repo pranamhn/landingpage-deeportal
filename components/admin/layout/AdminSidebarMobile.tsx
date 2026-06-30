@@ -58,7 +58,7 @@ export function AdminSidebarMobile({ badgeCounts }: { badgeCounts?: BadgeCounts 
             onTouchEnd={handleTouchEnd}
           >
             <div className="mb-2 flex items-center justify-between px-2">
-              <img src="/logo.png" alt="Deeportal" className="h-6 w-auto" />
+              <img src="/logo.webp" alt="Deeportal" className="h-6 w-auto" width="24" height="24" />
               <button
                 type="button"
                 onClick={() => setOpen(false)}

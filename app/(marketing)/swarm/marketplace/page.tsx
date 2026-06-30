@@ -5,8 +5,19 @@ import { cn } from "@/lib/cn";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
 import Badge from "@/components/ui/Badge";
+import SearchableSelect from "@/components/form/SearchableSelect";
 
 const API = "/api/swarm/marketplace";
+
+const OUTCOMES = [
+  { id: "raised_funding", label: "Raised Funding" },
+  { id: "no_funding", label: "Did Not Raise" },
+  { id: "acquired", label: "Acquired" },
+  { id: "ipo", label: "Went IPO" },
+  { id: "shut_down", label: "Shut Down" },
+  { id: "grew_significantly", label: "Grew Significantly" },
+  { id: "declined", label: "Declined" },
+];
 
 interface LeaderboardEntry {
   rank: number;
@@ -99,20 +110,12 @@ export default function MarketplacePage() {
                 onChange={(e) => setPredictionId(e.target.value)}
                 className="w-full rounded-xl border border-gray-200 px-4 py-2.5 font-mono text-sm focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-100"
               />
-              <select
-                value={actualOutcome}
-                onChange={(e) => setActualOutcome(e.target.value)}
-                className="w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-100"
-              >
-                <option value="">Select actual outcome...</option>
-                <option value="raised_funding">Raised Funding</option>
-                <option value="no_funding">Did Not Raise</option>
-                <option value="acquired">Acquired</option>
-                <option value="ipo">Went IPO</option>
-                <option value="shut_down">Shut Down</option>
-                <option value="grew_significantly">Grew Significantly</option>
-                <option value="declined">Declined</option>
-              </select>
+              <SearchableSelect
+                value={actualOutcome || undefined}
+                options={OUTCOMES}
+                onChange={(opt) => setActualOutcome(opt?.id || "")}
+                placeholder="Select actual outcome..."
+              />
               <Button variant="primary" onClick={handleVerify} disabled={!predictionId || !actualOutcome} className="w-full">
                 Submit Verification
               </Button>

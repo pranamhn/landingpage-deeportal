@@ -5,7 +5,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = { title: "Community — Deeportal", description: "Incubators, accelerators, and ecosystem programs supporting Asian startups." };
 
 export default async function CommunityHubPage() {
-  const result = await getCommunityHubs(100);
+  const result = await getCommunityHubs(20);
   const hubs = result.success ? result.data : [];
 
   return (

@@ -1,14 +1,14 @@
 import { getInvestors } from "@/lib/api/companiesService";
 import Pagination from "@/components/ui/Pagination";
 import Badge from "@/components/ui/Badge";
-import { AutoSubmitSelect } from "@/components/ui/AutoSubmitSelect";
+import FormSearchableSelect from "@/components/form/FormSearchableSelect";
 import { formatCurrencyAbbrev, formatFullAmount } from "@/lib/formatters/format";
 import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = { title: "Investors — Deeportal", description: "List of investors involved in funding Asian startups." };
 
-const PAGE_SIZE = 30;
+const PAGE_SIZE = 20;
 
 export default async function InvestorsPage({ searchParams }: { searchParams: Promise<Record<string, string>> }) {
   const params = await searchParams;
@@ -67,20 +67,10 @@ export default async function InvestorsPage({ searchParams }: { searchParams: Pr
           </div>
           <div className="hidden h-8 w-px self-center bg-gray-200 sm:block" />
           {types.length > 0 && (
-            <AutoSubmitSelect name="type" defaultValue={typeFilter} className="w-48 cursor-pointer rounded-xl border-0 bg-gray-50 px-4 py-2.5 text-sm font-medium text-gray-700 capitalize focus:outline-none focus:ring-2 focus:ring-brand-100">
-              <option value="">All Types</option>
-              {types.map((t: string) => (
-                <option key={t} value={t} className="capitalize">{t}</option>
-              ))}
-            </AutoSubmitSelect>
+            <FormSearchableSelect name="type" defaultValue={typeFilter} options={types.map((t: string) => ({ id: t, label: t.charAt(0).toUpperCase() + t.slice(1) }))} placeholder="All Types" />
           )}
           {sectors.length > 0 && (
-            <AutoSubmitSelect name="sector" defaultValue={sectorFilter} className="w-56 cursor-pointer rounded-xl border-0 bg-gray-50 px-4 py-2.5 text-sm font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-100">
-              <option value="">All Sector Focus</option>
-              {sectors.map((s: string) => (
-                <option key={s} value={s}>{s}</option>
-              ))}
-            </AutoSubmitSelect>
+            <FormSearchableSelect name="sector" defaultValue={sectorFilter} options={sectors.map((s: string) => ({ id: s, label: s }))} placeholder="All Sector Focus" />
           )}
           <button type="submit" className="inline-flex shrink-0 items-center gap-1.5 rounded-xl bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-700">
             <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>

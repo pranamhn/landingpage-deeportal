@@ -1,14 +1,14 @@
 import { getPeople } from "@/lib/api/companiesService";
 import { getStats } from "@/lib/api/statsService";
 import Pagination from "@/components/ui/Pagination";
-import { AutoSubmitSelect } from "@/components/ui/AutoSubmitSelect";
+import FormSearchableSelect from "@/components/form/FormSearchableSelect";
 import { formatRole } from "@/lib/formatters/format";
 import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = { title: "Founders — DeePortal.ai", description: "Track founders and key executives behind Asia's fastest-growing startups." };
 
-const PAGE_SIZE = 30;
+const PAGE_SIZE = 20;
 
 export default async function PeoplePage({ searchParams }: { searchParams: Promise<Record<string, string>> }) {
   const params = await searchParams;
@@ -90,20 +90,10 @@ export default async function PeoplePage({ searchParams }: { searchParams: Promi
           </div>
           <div className="hidden h-8 w-px self-center bg-gray-200 sm:block" />
           {sectors.length > 0 && (
-            <AutoSubmitSelect name="sector" defaultValue={sectorFilter} className="w-56 cursor-pointer rounded-xl border-0 bg-gray-50 px-4 py-2.5 text-sm font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-100">
-              <option value="">All Sectors</option>
-              {sectors.map((s: string) => (
-                <option key={s} value={s}>{s}</option>
-              ))}
-            </AutoSubmitSelect>
+            <FormSearchableSelect name="sector" defaultValue={sectorFilter} options={sectors.map((s: string) => ({ id: s, label: s }))} placeholder="All Sectors" />
           )}
           {roles.length > 0 && (
-            <AutoSubmitSelect name="role" defaultValue={roleFilter} className="w-56 cursor-pointer rounded-xl border-0 bg-gray-50 px-4 py-2.5 text-sm font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-100">
-              <option value="">All Roles</option>
-              {roles.map((r: string) => (
-                <option key={r} value={r}>{formatRole(r)}</option>
-              ))}
-            </AutoSubmitSelect>
+            <FormSearchableSelect name="role" defaultValue={roleFilter} options={roles.map((r: string) => ({ id: r, label: formatRole(r) }))} placeholder="All Roles" />
           )}
           <button type="submit" className="inline-flex shrink-0 items-center gap-1.5 rounded-xl bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-700">
             <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>

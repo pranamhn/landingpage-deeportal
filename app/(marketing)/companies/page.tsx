@@ -5,7 +5,7 @@ import ResultsSummary from "@/components/browse/ResultsSummary";
 import ActiveFilterChips from "@/components/ui/ActiveFilterChips";
 import EmptyState from "@/components/ui/EmptyState";
 
-const PAGE_SIZE = 24;
+const PAGE_SIZE = 20;
 
 export default async function CompaniesPage({ searchParams }: { searchParams: Promise<Record<string, string>> }) {
   const params = await searchParams;

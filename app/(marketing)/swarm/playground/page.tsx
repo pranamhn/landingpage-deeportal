@@ -5,6 +5,7 @@ import { cn } from "@/lib/cn";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
 import Badge from "@/components/ui/Badge";
+import SearchableSelect from "@/components/form/SearchableSelect";
 
 const API_BASE = "/api/swarm/playground";
 
@@ -91,9 +92,11 @@ function PersonaTester() {
     <Card>
       <h3 className="font-display text-heading-card text-gray-800">Test Persona</h3>
       <div className="mt-4 space-y-3">
-        <select value={role} onChange={(e) => setRole(e.target.value)} className="w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-100">
-          {roles.map(r => <option key={r} value={r}>{r.replace(/_/g, " ")}</option>)}
-        </select>
+        <SearchableSelect
+          value={role}
+          options={roles.map((r) => ({ id: r, label: r.replace(/_/g, " ") }))}
+          onChange={(opt) => setRole(opt?.id || roles[0])}
+        />
         <input placeholder="Topic (e.g. fintech)" value={topic} onChange={(e) => setTopic(e.target.value)} className="w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-100" />
         <input placeholder="Scenario (optional)" value={scenario} onChange={(e) => setScenario(e.target.value)} className="w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-100" />
         <Button variant="primary" onClick={testPersona} disabled={loading} className="w-full">Test Persona</Button>

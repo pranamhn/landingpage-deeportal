@@ -40,7 +40,7 @@ export function AdminHeader({ badgeCounts }: { badgeCounts?: BadgeCounts }) {
         {/* ── Left: logo + hamburger + breadcrumbs ── */}
         <div className="flex items-center flex-1 min-w-0">
           <div className="bg-white p-2 rounded-lg hover:shadow-md transition-shadow mr-2 shrink-0">
-            <img src="/logo.png" alt="Deeportal" className="h-6 w-auto" />
+            <img src="/logo.webp" alt="Deeportal" className="h-6 w-auto" width="24" height="24" />
           </div>
 
           <AdminSidebarMobile badgeCounts={badgeCounts} />

@@ -31,7 +31,7 @@ export default function SiteHeader() {
       <nav className="mx-auto box-border flex h-16 w-full max-w-[1220px] items-center justify-between overflow-visible px-4 py-4">
         <Link href="/" className="flex items-center">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo.png" alt="" className="h-8 w-auto" />
+          <img src="/logo.webp" alt="DeePortal" className="h-8 w-auto" width="32" height="32" fetchPriority="high" />
         </Link>
 
         <div className="hidden items-center gap-5 text-sm font-medium lg:flex">

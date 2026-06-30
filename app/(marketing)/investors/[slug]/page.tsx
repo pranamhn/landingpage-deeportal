@@ -9,10 +9,12 @@ import Link from "next/link";
 type Props = { params: Promise<{ slug: string }> };
 
 export async function generateStaticParams() {
-  const result = await getInvestors(50);
+  const result = await getInvestors(200);
   if (!result.success) return [];
   return result.data.map((inv: any) => ({ slug: inv.slug }));
 }
+
+export const revalidate = 3600;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;

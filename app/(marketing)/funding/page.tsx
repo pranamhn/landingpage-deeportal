@@ -7,7 +7,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = { title: "Funding — Deeportal", description: "Latest funding rounds in the Asian startup ecosystem." };
 
-const PAGE_SIZE = 25;
+const PAGE_SIZE = 20;
 
 function FundingRow({ r }: { r: any }) {
   const hasValuation = Boolean(r.valuation_usd && r.valuation_usd > 0);

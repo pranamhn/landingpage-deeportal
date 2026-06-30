@@ -49,7 +49,7 @@ export default function SiteFooter() {
       <div className="mx-auto box-border flex w-full max-w-[1220px] flex-col gap-8 px-4 lg:flex-row lg:items-start lg:justify-between">
         <div className="max-w-sm">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo.png" alt="DeePortal.ai" className="h-7 w-auto" />
+          <img src="/logo.webp" alt="DeePortal.ai" className="h-7 w-auto" width="28" height="28" />
           <p className="mt-2.5 text-sm leading-relaxed text-gray-600">
             A source-backed Asia startup directory, built for fast, verifiable research.
           </p>

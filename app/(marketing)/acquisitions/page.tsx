@@ -8,7 +8,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = { title: "Acquisitions — DeePortal.ai", description: "Acquisition activity in the Asian startup ecosystem." };
 
-const PAGE_SIZE = 25;
+const PAGE_SIZE = 20;
 
 interface AcquisitionRecord {
   id: string;
