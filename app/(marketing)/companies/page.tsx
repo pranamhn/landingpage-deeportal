@@ -1,19 +1,49 @@
-import { searchCompanies } from "@/lib/api/companiesService";
+import { searchCompanies, getCompanyFacets } from "@/services/companies";
 import CompanyCard from "@/components/company/CompanyCard";
 import FilterPanel from "@/components/browse/FilterPanel";
 import ResultsSummary from "@/components/browse/ResultsSummary";
 import ActiveFilterChips from "@/components/ui/ActiveFilterChips";
 import EmptyState from "@/components/ui/EmptyState";
+import { unstable_cache } from "next/cache";
 
+const STATUS_OPTIONS = [
+  { value: "", label: "All statuses" },
+  { value: "operating", label: "Operating" },
+  { value: "acquired", label: "Acquired" },
+  { value: "shut_down", label: "Shut Down" },
+];
+
+const getCachedFacets = unstable_cache(
+  async () => {
+    const result = await getCompanyFacets();
+    return result;
+  },
+  ["company-facets"],
+  { revalidate: 3600 },
+);
+
+const POPULAR_SECTOR_COUNT = 8;
 const PAGE_SIZE = 20;
 
 export default async function CompaniesPage({ searchParams }: { searchParams: Promise<Record<string, string>> }) {
   const params = await searchParams;
   const page = Math.max(Number(params.page) || 1, 1);
-  const result = await searchCompanies({ ...params, limit: String(PAGE_SIZE), page: String(page) });
+  const [result, facetsResult] = await Promise.all([
+    searchCompanies({ ...params, limit: String(PAGE_SIZE), page: String(page) }),
+    getCachedFacets(),
+  ]);
   const companies = result.success ? result.data.data : [];
   const hasActiveFilters = Object.entries(params).some(([key, value]) => key !== "page" && Boolean(value));
   const hasNext = companies.length === PAGE_SIZE;
+
+  const sectors = facetsResult.success ? facetsResult.data.sectors : [];
+  const popularSectors = sectors.slice(0, POPULAR_SECTOR_COUNT);
+  const otherSectors = sectors.slice(POPULAR_SECTOR_COUNT).slice().sort((a, b) => a.sector.localeCompare(b.sector));
+  const sectorOptions = [
+    ...popularSectors.map((s) => ({ id: s.sector, label: `${s.sector} (${s.count})` })),
+    ...otherSectors.map((s) => ({ id: s.sector, label: s.sector })),
+  ];
+  const statusOptions = STATUS_OPTIONS.map((o) => ({ id: o.value, label: o.label }));
 
   return (
     <div>
@@ -24,7 +54,7 @@ export default async function CompaniesPage({ searchParams }: { searchParams: Pr
       </div>
 
       <div className="grid gap-6 md:grid-cols-[280px_1fr]">
-        <FilterPanel params={params} />
+        <FilterPanel params={params} sectorOptions={sectorOptions} statusOptions={statusOptions} />
 
         <div>
           <ActiveFilterChips basePath="/companies" searchParams={params} />

@@ -1,4 +1,4 @@
-import { getAcquisitions } from "@/lib/api/companiesService";
+import { getAcquisitions } from "@/services/index";
 import { extractDomain, formatCurrencyAbbrev, formatFullAmount } from "@/lib/formatters/format";
 import Pagination from "@/components/ui/Pagination";
 import Badge from "@/components/ui/Badge";

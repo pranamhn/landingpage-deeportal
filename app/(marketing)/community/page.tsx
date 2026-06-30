@@ -1,4 +1,4 @@
-import { getCommunityHubs } from "@/lib/api/companiesService";
+import { getCommunityHubs } from "@/services/companies";
 import Badge from "@/components/ui/Badge";
 import type { Metadata } from "next";
 

@@ -1,4 +1,4 @@
-import { getInvestor, getInvestors } from "@/lib/api/companiesService";
+import { getInvestor, getInvestors } from "@/services/investors";
 import CompanyCard from "@/components/company/CompanyCard";
 import Card from "@/components/ui/Card";
 import Badge from "@/components/ui/Badge";

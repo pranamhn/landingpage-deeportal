@@ -1,4 +1,4 @@
-import { getRecentFunding, getFundingThisWeek, getFundingStats } from "@/lib/api/companiesService";
+import { getRecentFunding, getFundingThisWeek, getFundingStats } from "@/services/funding";
 import { formatRoundType, formatCurrencyAbbrev, formatFullAmount } from "@/lib/formatters/format";
 import Badge from "@/components/ui/Badge";
 import Pagination from "@/components/ui/Pagination";

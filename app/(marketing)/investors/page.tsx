@@ -1,4 +1,4 @@
-import { getInvestors } from "@/lib/api/companiesService";
+import { getInvestors } from "@/services/investors";
 import Pagination from "@/components/ui/Pagination";
 import Badge from "@/components/ui/Badge";
 import FormSearchableSelect from "@/components/form/FormSearchableSelect";

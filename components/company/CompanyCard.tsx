@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import Badge, { statusBadgeVariant } from "@/components/ui/Badge";
 import { formatStatus, formatRoundType, formatCurrencyAbbrev, formatFullAmount, formatRelativeTime } from "@/lib/formatters/format";
@@ -6,6 +8,7 @@ export interface CompanyCardData {
   id: string;
   slug: string;
   name: string;
+  website?: string | null;
   sector?: string | null;
   location?: string | null;
   founded_year?: string | null;
@@ -27,13 +30,91 @@ function cardStatusClass(status?: string | null) {
   return "bg-white/80";
 }
 
+function extractDomain(url?: string | null): string {
+  if (!url) return "";
+  try {
+    return new URL(url.replace(/^(?!https?:\/\/)/, "https://")).hostname.replace(/^www\./, "");
+  } catch {
+    return "";
+  }
+}
+
+function faviconUrl(domain: string): string {
+  return `https://www.google.com/s2/favicons?domain=${domain}&sz=64`;
+}
+
+export function CompanyAvatar({ name, website, size = "md" }: { name?: string | null; website?: string | null; size?: "sm" | "md" | "lg" }) {
+  const domain = extractDomain(website);
+  const initial = (name || "?")[0];
+  const dims = size === "lg" ? "h-14 w-14 text-2xl rounded-2xl" : size === "sm" ? "h-8 w-8 text-xs rounded-lg" : "h-10 w-10 text-sm rounded-full";
+  const imgDims = size === "lg" ? 56 : size === "sm" ? 32 : 40;
+
+  if (!domain) {
+    return (
+      <span className={`flex shrink-0 items-center justify-center bg-brand-100 font-bold text-brand-700 ${dims}`}>
+        {initial}
+      </span>
+    );
+  }
+
+  return (
+    <span className="relative shrink-0" style={{ width: imgDims, height: imgDims }}>
+      <img
+        src={faviconUrl(domain)}
+        alt=""
+        className="rounded-full object-contain bg-white border border-gray-100"
+        style={{ width: imgDims, height: imgDims }}
+        loading="lazy"
+        onError={(e) => {
+          (e.target as HTMLImageElement).style.display = "none";
+          (e.target as HTMLImageElement).nextElementSibling?.classList.remove("hidden");
+        }}
+      />
+      <span className={`hidden absolute inset-0 flex items-center justify-center bg-brand-100 font-bold text-brand-700 ${dims}`}>
+        {initial}
+      </span>
+    </span>
+  );
+}
+
+function CompanyAvatarCompact({ name, website }: { name?: string | null; website?: string | null }) {
+  const domain = extractDomain(website);
+  const initial = (name || "?")[0];
+
+  if (!domain) {
+    return (
+      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-100 text-sm font-bold text-brand-700">
+        {initial}
+      </span>
+    );
+  }
+
+  return (
+    <span className="relative h-9 w-9 shrink-0">
+      <img
+        src={faviconUrl(domain)}
+        alt=""
+        className="h-9 w-9 rounded-full object-contain bg-white border border-gray-100"
+        width={36}
+        height={36}
+        loading="lazy"
+        onError={(e) => {
+          (e.target as HTMLImageElement).style.display = "none";
+          (e.target as HTMLImageElement).nextElementSibling?.classList.remove("hidden");
+        }}
+      />
+      <span className="hidden absolute inset-0 flex items-center justify-center rounded-full bg-brand-100 text-sm font-bold text-brand-700">
+        {initial}
+      </span>
+    </span>
+  );
+}
+
 export default function CompanyCard({ company, compact = false }: { company: CompanyCardData; compact?: boolean }) {
   if (compact) {
     return (
       <Link href={`/companies/${company.slug}`} className="flex items-center gap-3 rounded-lg p-2 hover:bg-gray-50">
-        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-100 text-sm font-bold text-brand-700">
-          {(company.name || "?")[0]}
-        </span>
+        <CompanyAvatarCompact name={company.name} website={company.website} />
         <div className="min-w-0">
           <div className="truncate font-semibold">{company.name}</div>
           <div className="truncate text-xs text-muted">{company.sector || "—"} · {company.location || "—"}</div>
@@ -53,9 +134,7 @@ export default function CompanyCard({ company, compact = false }: { company: Com
       href={`/companies/${company.slug}`}
       className={`group flex min-h-[150px] items-start gap-3 rounded-2xl p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md sm:p-7 ${cardStatusClass(company.status)}`}
     >
-      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-100 text-sm font-bold text-brand-700">
-        {(company.name || "?")[0]}
-      </span>
+      <CompanyAvatar name={company.name} website={company.website} />
       <div className="min-w-0 flex-1">
         <div className="flex items-start justify-between gap-2">
           <div className="flex min-w-0 items-center gap-1.5">

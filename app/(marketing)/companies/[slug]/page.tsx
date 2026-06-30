@@ -1,8 +1,8 @@
-import { getCompany, getSimilarCompanies, searchCompanies } from "@/lib/api/companiesService";
+import { getCompany, getSimilarCompanies, searchCompanies } from "@/services/companies";
 import WatchlistButton from "@/components/WatchlistButton";
 import ClaimProfileCallout from "@/components/company/ClaimProfileCallout";
 import EmbedBadgeCallout from "@/components/company/EmbedBadgeCallout";
-import CompanyCard from "@/components/company/CompanyCard";
+import CompanyCard, { CompanyAvatar } from "@/components/company/CompanyCard";
 import CompanyFacts from "@/components/company/CompanyFacts";
 import FundingTimeline from "@/components/company/FundingTimeline";
 import SourceList from "@/components/company/SourceList";
@@ -69,7 +69,7 @@ export default async function CompanyPage({ params }: Props) {
       <div className="space-y-6">
         <section className="card">
           <div className="flex gap-4">
-            <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-100 text-2xl font-bold text-brand-700"></span>
+            <CompanyAvatar name={c.name} website={c.website} size="lg" />
             <div>
               <p className="eyebrow">Company Profile</p>
               <h1 className="font-display text-display-page font-bold">{c.name}</h1>

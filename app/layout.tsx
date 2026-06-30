@@ -6,6 +6,7 @@ import { AuthProvider } from "@/components/AuthContext";
 import SiteHeader from "@/components/layout/SiteHeader";
 import SiteFooter from "@/components/layout/SiteFooter";
 import ServiceWorkerCleanup from "@/components/ServiceWorkerCleanup";
+import ProgressBarProvider from "@/components/ProgressBarProvider";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -43,6 +44,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <link rel="preload" as="image" href="/logo.webp" fetchPriority="high" />
       </head>
       <body className={`${inter.className} ${plusJakartaSans.variable} flex min-h-screen flex-col`}>
+        <ProgressBarProvider />
         <ServiceWorkerCleanup />
         {isAdmin ? (
           <AuthProvider>{children}</AuthProvider>

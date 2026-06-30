@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { BACKEND_ORIGIN } from "@/lib/backendOrigin";
+import { getNews } from "@/services/index";
 
 export const metadata: Metadata = { title: "News Feed — DeePortal.ai", description: "Latest news and updates from Asia's startup ecosystem." };
 
@@ -13,16 +13,6 @@ interface NewsRow {
   published_at?: string | null;
   company_name: string;
   company_slug: string;
-}
-
-async function getNews(page = 1) {
-  try {
-    const resp = await fetch(`${BACKEND_ORIGIN}/api/v1/news?page=${page}&limit=21`, { next: { revalidate: 300 } });
-    const json = await resp.json();
-    return json.success ? json.data : { rows: [], total: 0, page: 1, has_next: false };
-  } catch {
-    return { rows: [], total: 0, page: 1, has_next: false };
-  }
 }
 
 function extractDomain(url: string): string {
@@ -107,7 +97,8 @@ function sourceGradient(domain: string): string {
 export default async function NewsPage({ searchParams }: { searchParams: Promise<Record<string, string>> }) {
   const params = await searchParams;
   const page = Math.max(Number(params.page) || 1, 1);
-  const data = await getNews(page);
+  const result = await getNews(page);
+  const data = result.success ? result.data : { rows: [], total: 0, page: 1, has_next: false };
   const rows: NewsRow[] = data.rows || [];
 
   return (
@@ -131,37 +122,37 @@ export default async function NewsPage({ searchParams }: { searchParams: Promise
               className="group card flex flex-col overflow-hidden p-0 transition hover:-translate-y-1 hover:shadow-lg"
             >
               {/* Source header bar */}
-              <a href={n.url} target="_blank" rel="noopener noreferrer" className={`flex items-center gap-2 bg-gradient-to-r ${imageGradient} px-4 py-2.5`}>
+              <a href={n.url} target="_blank" rel="noopener noreferrer" className={`flex items-center gap-1.5 sm:gap-2 bg-gradient-to-r ${imageGradient} px-3 sm:px-4 py-2 sm:py-2.5 min-w-0`}>
                 <img
                   src={faviconUrl(domain)}
                   alt=""
-                  className="h-5 w-5 rounded-sm bg-white/20"
+                  className="h-4 w-4 sm:h-5 sm:w-5 shrink-0 rounded-sm bg-white/20"
                   width={20}
                   height={20}
                   loading="lazy"
                 />
-                <span className="truncate text-xs font-semibold text-white/90">{source}</span>
+                <span className="truncate text-[11px] sm:text-xs font-semibold text-white/90">{source}</span>
                 {timeAgo && (
-                  <span className="ml-auto shrink-0 text-[11px] text-white/70">{timeAgo}</span>
+                  <span className="ml-auto shrink-0 text-[10px] sm:text-[11px] text-white/70">{timeAgo}</span>
                 )}
               </a>
 
               {/* Title + summary */}
-              <a href={n.url} target="_blank" rel="noopener noreferrer" className="flex flex-1 flex-col gap-2 p-4">
-                <h3 className="text-sm font-semibold leading-snug text-gray-900 line-clamp-3 group-hover:text-brand-600 transition-colors">
+              <a href={n.url} target="_blank" rel="noopener noreferrer" className="flex flex-1 flex-col gap-1.5 sm:gap-2 p-3 sm:p-4">
+                <h3 className="text-[13px] sm:text-sm font-semibold leading-snug text-gray-900 line-clamp-3 group-hover:text-brand-600 transition-colors break-words">
                   {n.title || "Untitled"}
                 </h3>
                 {n.summary && (
-                  <p className="text-xs text-gray-500 line-clamp-2 leading-relaxed">{n.summary}</p>
+                  <p className="text-[11px] sm:text-xs text-gray-500 line-clamp-2 leading-relaxed">{n.summary}</p>
                 )}
               </a>
 
               {/* Company footer */}
               {n.company_name && (
-                <div className="flex items-center gap-2 border-t border-gray-100 px-4 py-2.5">
+                <div className="flex items-center gap-1.5 sm:gap-2 border-t border-gray-100 px-3 sm:px-4 py-2 sm:py-2.5">
                   <Link
                     href={`/companies/${n.company_slug}`}
-                    className="text-xs font-medium text-brand-600 hover:underline"
+                    className="text-[11px] sm:text-xs font-medium text-brand-600 hover:underline truncate"
                   >
                     {n.company_name}
                   </Link>

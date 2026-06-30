@@ -1,5 +1,4 @@
-import { getPeople } from "@/lib/api/companiesService";
-import { getStats } from "@/lib/api/statsService";
+import { getPeople, getStats } from "@/services/index";
 import Pagination from "@/components/ui/Pagination";
 import FormSearchableSelect from "@/components/form/FormSearchableSelect";
 import { formatRole } from "@/lib/formatters/format";

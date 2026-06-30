@@ -1,4 +1,4 @@
-import { getPerson } from "@/lib/api/companiesService";
+import { getPerson } from "@/services/index";
 import { formatRole } from "@/lib/formatters/format";
 import Badge from "@/components/ui/Badge";
 import Link from "next/link";

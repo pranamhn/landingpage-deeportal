@@ -1,5 +1,7 @@
-import { searchCompanies, getTrendingCompanies, getFeaturedCompanies, getAcquisitions, getInvestors } from "@/lib/api/companiesService";
-import { getStats, getRecentFunding } from "@/lib/api/statsService";
+import { searchCompanies, getTrendingCompanies, getFeaturedCompanies } from "@/services/companies";
+import { getAcquisitions, getStats } from "@/services/index";
+import { getInvestors } from "@/services/investors";
+import { getRecentFunding } from "@/services/funding";
 import Link from "next/link";
 import CompanyCard from "@/components/company/CompanyCard";
 import SectionHeader from "@/components/ui/SectionHeader";
@@ -186,26 +188,54 @@ export default async function HomePage() {
               </Link>
             }
           />
-          <div className="card grid gap-1 sm:grid-cols-2">
-            {acquisitions.map((a: any) => (
-              <Link
-                key={a.id}
-                href={`/companies/${a.acquiree_slug}`}
-                className="flex items-center justify-between gap-3 rounded-lg p-2 hover:bg-gray-50"
-              >
-                <div className="min-w-0">
-                  <div className="truncate font-semibold">{a.acquirer_name || "Unknown"} → {a.acquiree_name || "Unknown"}</div>
-                  <div className="text-xs text-muted">
-                    {!isNotStated(a.announced_date) ? fmtDate(a.announced_date)
-                      : !isNotStated(a.source_published_at) ? fmtDate(a.source_published_at)
-                        : "Date not announced"}
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {acquisitions.map((a: any, i: number) => {
+              const gradients = [
+                "from-brand-500 to-brand-700",
+                "from-accent-500 to-accent-700",
+                "from-violet-500 to-purple-700",
+                "from-sky-500 to-blue-700",
+                "from-emerald-500 to-green-700",
+                "from-amber-500 to-orange-700",
+              ];
+              const gradient = gradients[i % gradients.length];
+              const amount = a.amount_usd ? formatCurrencyAbbrev(a.amount_usd) : null;
+
+              return (
+                <Link
+                  key={a.id}
+                  href={`/companies/${a.acquiree_slug}`}
+                  className="group card flex flex-col overflow-hidden p-0 transition hover:-translate-y-1 hover:shadow-lg"
+                >
+                  {/* Header bar */}
+                  <div className={`flex items-center gap-2 bg-gradient-to-r ${gradient} px-3 sm:px-4 py-2.5`}>
+                    <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-white/80">M&A</span>
+                    <span className="text-[10px] sm:text-[11px] text-white/70">
+                      {!isNotStated(a.announced_date) ? fmtDate(a.announced_date)
+                        : !isNotStated(a.source_published_at) ? fmtDate(a.source_published_at)
+                          : ""}
+                    </span>
+                    {amount && (
+                      <span className="ml-auto shrink-0 text-sm font-extrabold text-white">{amount}</span>
+                    )}
                   </div>
-                </div>
-                <span className="shrink-0 font-display text-sm font-extrabold text-success-600" title={formatFullAmount(a.amount_usd)}>
-                  {a.amount_usd ? formatCurrencyAbbrev(a.amount_usd) : "—"}
-                </span>
-              </Link>
-            ))}
+
+                  {/* Body */}
+                  <div className="flex flex-1 flex-col gap-1 p-3 sm:p-4">
+                    <p className="text-[13px] sm:text-sm font-semibold leading-snug text-gray-900 line-clamp-2 break-words">
+                      <span className="text-brand-600">{a.acquirer_name || "Unknown"}</span>
+                      <span className="mx-1.5 text-gray-300">→</span>
+                      <span>{a.acquiree_name || "Unknown"}</span>
+                    </p>
+                    {amount && (
+                      <p className="text-[11px] sm:text-xs text-success-600 font-medium" title={formatFullAmount(a.amount_usd)}>
+                        {formatFullAmount(a.amount_usd)}
+                      </p>
+                    )}
+                  </div>
+                </Link>
+              );
+            })}
           </div>
         </section>
       )}
